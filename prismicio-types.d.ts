@@ -4,7 +4,44 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type PageDocumentDataSlicesSlice = CustomerLogosSlice | AlternateGridSlice;
+type BoutinqueDocumentDataSlicesSlice = CustomerLogosSlice;
+
+/**
+ * Content for boutinque documents
+ */
+interface BoutinqueDocumentData {
+  /**
+   * Slice Zone field in *boutinque*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: boutinque.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<BoutinqueDocumentDataSlicesSlice>;
+}
+
+/**
+ * boutinque document from Prismic
+ *
+ * - **API ID**: `boutinque`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BoutinqueDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<BoutinqueDocumentData>,
+    "boutinque",
+    Lang
+  >;
+
+type PageDocumentDataSlicesSlice =
+  | TextSlice
+  | CustomerLogosSlice
+  | AlternateGridSlice;
 
 /**
  * Content for Page documents
@@ -20,6 +57,61 @@ interface PageDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   title: prismic.TitleField;
+
+  /**
+   * drt field in *Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.drt
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  drt: prismic.ContentRelationshipField<"boutinque">;
+
+  /**
+   * lnk field in *Page*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.lnk
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  lnk: prismic.LinkField;
+
+  /**
+   * lnkst field in *Page*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.lnkst
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  lnkst: prismic.LinkField;
+
+  /**
+   * qnk field in *Page*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.qnk
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  qnk: prismic.LinkField;
+
+  /**
+   * qsk field in *Page*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.qsk
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  qsk: prismic.LinkField;
 
   /**
    * Slice Zone field in *Page*
@@ -45,7 +137,7 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-export type AllDocumentTypes = PageDocument;
+export type AllDocumentTypes = BoutinqueDocument | PageDocument;
 
 /**
  * Item in *AlternateGrid → Default → Primary → items*
@@ -393,6 +485,58 @@ export type RichTextSlice = prismic.SharedSlice<
   RichTextSliceVariation
 >;
 
+/**
+ * Primary content in *Text → Default → Primary*
+ */
+export interface TextSliceDefaultPrimary {
+  /**
+   * text field in *Text → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text.default.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  text: prismic.KeyTextField;
+
+  /**
+   * mif field in *Text → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text.default.primary.mif
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  mif: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for Text Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TextSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<TextSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Text*
+ */
+type TextSliceVariation = TextSliceDefault;
+
+/**
+ * Text Shared Slice
+ *
+ * - **API ID**: `text`
+ * - **Description**: Text
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TextSlice = prismic.SharedSlice<"text", TextSliceVariation>;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
@@ -414,6 +558,9 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      BoutinqueDocument,
+      BoutinqueDocumentData,
+      BoutinqueDocumentDataSlicesSlice,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
@@ -435,6 +582,10 @@ declare module "@prismicio/client" {
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
       RichTextSliceDefault,
+      TextSlice,
+      TextSliceDefaultPrimary,
+      TextSliceVariation,
+      TextSliceDefault,
     };
   }
 }

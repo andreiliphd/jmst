@@ -22,11 +22,62 @@
           "single": "heading1"
         }
       },
+      "drt": {
+        "type": "Link",
+        "config": {
+          "label": "",
+          "select": "document",
+          "customtypes": ["boutinque"]
+        }
+      },
+      "lnk": {
+        "type": "Link",
+        "config": {
+          "label": "",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "select": null,
+          "allowText": true
+        }
+      },
+      "lnkst": {
+        "type": "Link",
+        "config": {
+          "label": "",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "select": null,
+          "allowText": true
+        }
+      },
+      "qnk": {
+        "type": "Link",
+        "config": {
+          "label": "",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "select": null,
+          "allowText": true
+        }
+      },
+      "qsk": {
+        "type": "Link",
+        "config": {
+          "label": "",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "select": null,
+          "allowText": true
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "text": {
+              "type": "SharedSlice"
+            },
             "customer_logos": {
               "type": "SharedSlice"
             },

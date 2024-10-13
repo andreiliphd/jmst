@@ -11,4 +11,5 @@ export const components = defineSliceZoneComponents({
     () => import("./CustomerLogos/index.vue"),
   ),
   rich_text: defineAsyncComponent(() => import("./RichText/index.vue")),
+  text: defineAsyncComponent(() => import("./Text/index.vue")),
 });
